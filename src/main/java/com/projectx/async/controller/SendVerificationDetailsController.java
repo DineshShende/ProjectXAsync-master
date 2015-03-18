@@ -23,7 +23,6 @@ import com.projectx.async.domain.EmailRequestStore;
 import com.projectx.async.domain.SMSEventDeferredObject;
 import com.projectx.async.domain.SMSMessageDTO;
 import com.projectx.async.domain.SMSRequestStore;
-//HI
 
 @RestController
 @RequestMapping(value="/sendVerificationDetails")
