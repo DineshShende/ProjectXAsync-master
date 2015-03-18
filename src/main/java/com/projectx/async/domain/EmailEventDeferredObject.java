@@ -4,7 +4,10 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +15,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import com.projectx.async.controller.SendVerificationDetailsController;
 
-
+@PropertySource(value="classpath:/application.properties")
 public class EmailEventDeferredObject<T> extends DeferredResult<ResponseEntity<Integer>> implements Runnable {
 
 	private String email;
@@ -21,10 +24,12 @@ public class EmailEventDeferredObject<T> extends DeferredResult<ResponseEntity<I
 	
 	private String message;
 	
-	
+	private String url;
 	
 	@Override
 	public void run() {
+	
+		
 		
 		RestTemplate restTemplate=new RestTemplate();
 		
@@ -32,8 +37,11 @@ public class EmailEventDeferredObject<T> extends DeferredResult<ResponseEntity<I
 		
 		Log logger = LogFactory.getLog(SendVerificationDetailsController.class);
 		
-				
-		Boolean result=restTemplate.postForObject("http://localhost:9080/asycn/sendEmail", emailMessageDTO, Boolean.class);
+		
+		logger.debug("Url Email Send:"+url);
+		
+		
+		Boolean result=restTemplate.postForObject(url+"/asycn/sendEmail", emailMessageDTO, Boolean.class);
 		
 		if(result==true)
 		{
@@ -53,13 +61,14 @@ public class EmailEventDeferredObject<T> extends DeferredResult<ResponseEntity<I
 		
 	}
 
-	public EmailEventDeferredObject(String email,UUID uuid,String message) {
+	public EmailEventDeferredObject(String email,UUID uuid,String message,String url) {
 	
 		super(10000L, (new ResponseEntity<Integer>(1,HttpStatus.OK)));
 	
 		this.email = email;
 		this.message=message;
 		this.uuid=uuid;
+		this.url=url;
 		
 	}
 

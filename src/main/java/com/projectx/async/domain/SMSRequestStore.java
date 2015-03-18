@@ -1,7 +1,6 @@
 package com.projectx.async.domain;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(value="singleton", proxyMode=ScopedProxyMode.TARGET_CLASS)
-public class SMSRequestStore {
+public class SMSRequestStore implements Serializable{
 
 	private static final long serialVersionUID = -1779666204730031281L;
 	

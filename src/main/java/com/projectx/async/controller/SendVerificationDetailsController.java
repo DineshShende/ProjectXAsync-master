@@ -4,6 +4,7 @@ package com.projectx.async.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,20 +41,24 @@ public class SendVerificationDetailsController {
 	@Autowired
 	Gson gson;
 	
+	@Value("${rest.url}")
+	String restUrl;
+	
 	private static Log logger = LogFactory.getLog(SendVerificationDetailsController.class);
 	
 	@RequestMapping(value="/sendEmailAsync",method=RequestMethod.POST)
 	public DeferredResult<ResponseEntity<Integer>> sendEmail(@RequestBody EmailMessageDTO emailDTO)
 	{
 		logger.info("Client received: " + emailDTO);
-	
+		
+			
 		EmailEventDeferredObject<ResponseEntity<Integer>> eventDeferredObject = null;
 		try
 		{
 			if(!requestStore.contains(emailDTO.getEmail()))
 			{
 				logger.info("New Request:"+emailDTO);
-				eventDeferredObject=new EmailEventDeferredObject<ResponseEntity<Integer>>(emailDTO.getEmail(),emailDTO.getUuid(),emailDTO.getMessage());
+				eventDeferredObject=new EmailEventDeferredObject<ResponseEntity<Integer>>(emailDTO.getEmail(),emailDTO.getUuid(),emailDTO.getMessage(),restUrl);
 				
 				requestStore.add(eventDeferredObject);
 				Thread t1=new Thread(eventDeferredObject);
@@ -123,7 +128,7 @@ public class SendVerificationDetailsController {
 		{
 			logger.info("New Request:"+smsMessageDTO);
 			eventDeferredObject=new SMSEventDeferredObject<ResponseEntity<Integer>>(smsMessageDTO.getMobile(),smsMessageDTO.getUuid(),
-			smsMessageDTO.getMessage());
+			smsMessageDTO.getMessage(),restUrl);
 				
 			smsRequestStore.add(eventDeferredObject);
 			Thread t1=new Thread(eventDeferredObject);

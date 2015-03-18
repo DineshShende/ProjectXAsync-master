@@ -19,7 +19,7 @@ public class SMSEventDeferredObject<T> extends DeferredResult<ResponseEntity<Int
 	
 	private String message;
 	
-	
+	private String url;
 	
 	@Override
 	public void run() {
@@ -31,7 +31,7 @@ public class SMSEventDeferredObject<T> extends DeferredResult<ResponseEntity<Int
 		Log logger = LogFactory.getLog(SendVerificationDetailsController.class);
 		
 				
-		Boolean result=restTemplate.postForObject("http://localhost:9080/asycn/sendSMS", smsMessageDTO, Boolean.class);
+		Boolean result=restTemplate.postForObject(url+"/asycn/sendSMS", smsMessageDTO, Boolean.class);
 		
 		if(result==true)
 		{
@@ -51,14 +51,14 @@ public class SMSEventDeferredObject<T> extends DeferredResult<ResponseEntity<Int
 		
 	}
 
-	public SMSEventDeferredObject(Long mobile,UUID uuid,String message) {
+	public SMSEventDeferredObject(Long mobile,UUID uuid,String message,String url) {
 	
 		super(10000L, (new ResponseEntity<Integer>(1,HttpStatus.OK)));
 	
 		this.mobile = mobile;
 		this.message=message;
 		this.uuid=uuid;
-		
+		this.url=url;
 	}
 
 

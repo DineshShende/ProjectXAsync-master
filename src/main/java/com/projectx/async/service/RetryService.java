@@ -47,7 +47,7 @@ public class RetryService {
 	
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	@Scheduled(fixedRate=30000)
+//	@Scheduled(fixedRate=30000)
 	public void retryService()
 	{
 		
@@ -64,7 +64,7 @@ public class RetryService {
 			log.debug("Started retry for"+list.get(i));
 				
 			ListenableFuture<ResponseEntity<Integer>>		
-			 status=asyncRestTemplate.exchange(env.getProperty("async.url")+list.get(i).getService(), HttpMethod.POST,
+			 status=asyncRestTemplate.exchange(list.get(i).getService(), HttpMethod.POST,
 					 entity, Integer.class);
 			 
 				 

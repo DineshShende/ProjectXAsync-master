@@ -16,7 +16,7 @@ import com.projectx.data.domain.RetriggerList;
 
 
 @Component
-@Profile(value={"Dev"})
+@Profile(value={"Dev","Prod"})
 @PropertySource(value="classpath:/application.properties")
 public class RetriggerDetailsRepositoryImpl implements
 		RetriggerDetailsRepository {
