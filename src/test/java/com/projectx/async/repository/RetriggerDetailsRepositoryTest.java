@@ -27,13 +27,10 @@ public class RetriggerDetailsRepositoryTest {
 	@Autowired
 	RetriggerDetailsRepository retriggerDetailsRepository;
 	
-	
-
-	
 	@Before
 	public void setUp()
 	{
-		
+		retriggerDetailsRepository.clearTestData();
 	}
 	
 	@Test

@@ -17,5 +17,7 @@ public interface RetriggerDetailsRepository {
 	public List<RetriggerDetails> findAll();
 	
 	public Boolean deleteById(Long retriggerId);
+	
+	public void clearTestData();
 
 }
